@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.daniellecaricati.personalblog.model.Post;
 import com.daniellecaricati.personalblog.repository.PostRepository;
+import com.daniellecaricati.personalblog.repository.ThemeRepository;
 
 import jakarta.validation.Valid;
 
@@ -31,6 +32,9 @@ public class PostController {
 	
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private ThemeRepository themeRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Post>> getAll() {
@@ -51,17 +55,23 @@ public class PostController {
 	
 	@PostMapping
 	public ResponseEntity<Post> post(@Valid @RequestBody Post post) {
-		post.setId(null);
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(postRepository.save(post));
+		
+		if (themeRepository.existsById(post.getTheme().getId())) {
+			post.setId(null);
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(postRepository.save(post));
+		} throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Theme does not exist", null);
 	}
 	
 	@PutMapping
 	public ResponseEntity<Post> put(@Valid @RequestBody Post post) {
-		return postRepository.findById(post.getId())
-				.map(response -> ResponseEntity.status(HttpStatus.OK)
-						.body(postRepository.save(post)))
-			.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		if (postRepository.existsById(post.getId())) {
+				if (themeRepository.existsById(post.getTheme().getId()))
+					return ResponseEntity.status(HttpStatus.OK)
+							.body(postRepository.save(post));
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Theme does not exist", null);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
