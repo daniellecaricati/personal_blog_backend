@@ -20,7 +20,7 @@ public class UserLogin {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getUser() {
+	public String getUsername() {
 		return user;
 	}
 	public void setUser(String user) {

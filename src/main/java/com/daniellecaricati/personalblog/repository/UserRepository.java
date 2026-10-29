@@ -8,5 +8,5 @@ import com.daniellecaricati.personalblog.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-	Optional<User> findByUser(String user);
+	Optional<User> findByUsername(String username);
 }

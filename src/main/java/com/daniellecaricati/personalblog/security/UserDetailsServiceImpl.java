@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 			throw new UsernameNotFoundException("Username (email) must not be empty.");
 		}
 		
-		Optional<User> user = userRepository.findByUser(username);
+		Optional<User> user = userRepository.findByUsername(username);
 		
 		if (user.isPresent()) {
 			return new UserDetailsImpl(user.get());

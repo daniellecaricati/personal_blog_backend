@@ -53,10 +53,10 @@ public class JwtService {
 		
 	}
 	
-	public String generateToken(String username) {
+	public String generateToken(String user) {
 		Instant now = Instant.now();
 		return Jwts.builder()
-			.subject(username)
+			.subject(user)
 			.issuedAt(Date.from(now))
 			.expiration(Date.from(now.plus(expiration)))
 			.signWith(getSigningKey())

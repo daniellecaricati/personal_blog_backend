@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class User {
 	
 	@NotBlank(message = "The Username attribute is required.")
 	@Email(message = "The Username attribute must be a valid email.")
-	private String user;
+	private String username;
 	
 	@NotBlank(message = "The Password attribute is required.")
 	@Size(min = 8, message = "The password must have at least 8 characters.")
@@ -58,12 +59,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

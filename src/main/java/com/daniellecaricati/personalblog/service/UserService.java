@@ -40,7 +40,7 @@ public class UserService {
 		}
 		
 		public Optional<User> createUser(User user) {
-			if(userRepository.findByUser(user.getUser()).isPresent()) {
+			if(userRepository.findByUsername(user.getUsername()).isPresent()) {
 				return Optional.empty();
 			}
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -54,7 +54,7 @@ public class UserService {
 			if (!userRepository.findById(user.getId()).isPresent()) {
 				return Optional.empty();
 			}
-			Optional<User> existingUser = userRepository.findByUser(user.getUser());
+			Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 			if(existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.", null);
 			}
@@ -68,8 +68,8 @@ public class UserService {
 			}
 			UserLogin login = userLogin.get();
 			try {
-				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUser(), login.getPassword()));
-				return userRepository.findByUser(login.getUser()) .map(user -> buildResponseLogin(login, user));
+				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+				return userRepository.findByUsername(login.getUsername()) .map(user -> buildResponseLogin(login, user));
 				
 			}catch (Exception e) {
 				return Optional.empty();
@@ -81,7 +81,7 @@ public class UserService {
 			userLogin.setName(user.getName());
 			userLogin.setPhoto(user.getPhoto());
 			userLogin.setPassword("");
-			userLogin.setToken(createToken(user.getUser()));
+			userLogin.setToken(createToken(user.getUsername()));
 			return userLogin;
 		}
 		
