@@ -45,7 +45,7 @@ public class UserController {
 	public ResponseEntity<User> post(@Valid @RequestBody User user) {
 		return userService.createUser(user)
 				.map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());			
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());			
 	}
 	
 	@PutMapping("/update")
