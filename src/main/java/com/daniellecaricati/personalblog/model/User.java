@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,7 @@ public class User {
 	@NotBlank(message = "The Name attribute is required.")
 	private String name;
 	
+	@Schema(example = "email@email.com")
 	@NotBlank(message = "The Username attribute is required.")
 	@Email(message = "The Username attribute must be a valid email.")
 	private String username;
@@ -41,6 +43,7 @@ public class User {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties(value = "user", allowSetters = true)
+	@Schema(hidden = true)
 	private List<Post> post;
 
 	public Long getId() {
